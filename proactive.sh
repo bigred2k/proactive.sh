@@ -54,9 +54,10 @@ echo
 if pgrep -x "memcached" > /dev/null;
 then
     echo "Memcache Stats:"
-    echo "echo "$(echo stats | nc localhost 11211 | grep 'hits\|misses\|evictions\|yields\|threads\|connections\|uptime')""
+    echo stats | nc localhost 11211 | grep 'hits\|misses\|evictions\|yields\|threads\|connections\|uptime'
 else
     echo "Memcache not running"
+fi
 echo
 
 #CMS Updates Listing Routine
@@ -75,4 +76,3 @@ finish_time="$(date +%s)"
 #mail -s 'CMS updates for $hostname' jwoodard@contegix.com < /opt/scripts/updates.txt
 
 echo "Time duration: $((finish_time - start_time)) secs."
-
