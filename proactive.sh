@@ -5,7 +5,9 @@ uptime="$(uptime)"
 freemem="$(free -m)"
 freedisk="$(df -h | grep '/'|sort -nr -k5)"
 docroots="$(cat /etc/httpd/conf.d/*.conf |grep DocumentRoot | grep -v '#'|awk '{print $2}'|sort |uniq)"
-hostname=$(hostname)
+hostname="$(hostname)"
+sendmailqueue="$(mailq | tail -n1 | awk '{print $3}')"
+postfixmailqueue="$(mailq | tail -n1 | awk '{print $5}')"
 
 #Uptime
 echo "Uptime:"
@@ -19,6 +21,16 @@ echo "$freemem"
 echo "Disk Space:"
 echo "$freedisk"
 
+#Mail Queue
+if pgrep -x "master" > /dev/null;
+then
+    echo "Postfix Queue: $postfixmailqueue"
+elif pgrep -x "sendmail" > /dev/null;
+then
+    echo "Sendmail Queue: $sendmailqueue"
+else
+    echo "Unknown Mail System"
+fi
 
 #CMS Updates listing Routine
 
@@ -32,7 +44,8 @@ for docroot in $docroots; do echo ; cd $docroot ; echo $(pwd) ; wp core version 
 
 finish_time="$(date +%s)"
 
-mail -s 'CMS updates for $hostname' jwoodard@contegix.com < /opt/scripts/updates.txt
+#Send Results Via Mail
+#mail -s 'CMS updates for $hostname' jwoodard@contegix.com < /opt/scripts/updates.txt
 
 echo "Time duration: $((finish_time - start_time)) secs."
 
