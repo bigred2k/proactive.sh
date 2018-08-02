@@ -50,6 +50,15 @@ else
 fi
 echo
 
+#Memcache stats
+if pgrep -x "memcached" > /dev/null;
+then
+    echo "Memcache Stats:"
+    echo "echo "$(echo stats | nc localhost 11211 | grep 'hits\|misses\|evictions\|yields\|threads\|connections\|uptime')""
+else
+    echo "Memcache not running"
+echo
+
 #CMS Updates Listing Routine
 mkdir -p /opt/scripts/
 rm -rf /opt/scripts/cms_updates.txt
