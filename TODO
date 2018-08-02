@@ -32,3 +32,4 @@ search for .sql files in /var/www/*/htdocs/ (recursively)
 
 compress log files in /var/www/logs/
 
+add if-not exists test to mkdir (and anywhere else needed)
