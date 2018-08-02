@@ -1,0 +1,34 @@
+switch -a = all
+switch -m = mailqueue
+switch -c = list cms updates
+
+
+other features:
+
+uptime:
+Free memory:
+Disk space:
+
+
+search for docroots and label them as wordpress or drupal
+if wordpress:
+run
+wp core version  --allow-root
+wp plugin list --allow-root |grep available
+wp theme list --allow-root |grep available
+
+
+if drupal run:
+drush status
+drush
+drush rq
+
+test to see if mysql is running and if so, run mysqltuner
+test to see if apache is running and if so, run apachetuner
+test to see if memcache is running and if so, run STATS and grep for important stuff
+
+search for .sql files in /var/www/*/htdocs/ (recursively)
+
+
+compress log files in /var/www/logs/
+
