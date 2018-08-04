@@ -60,6 +60,11 @@ else
 fi
 echo
 
+#PHP files in /uploads/ or /files/
+echo "Searching for PHP files within /var/www/*/htdocs/wp-content/uploads/ and /var/www/*/htdocs/sites/default/files/."
+echo "These are typically malicious files:"
+find /var/www/*/htdocs/wp-content/uploads/ /var/www/*/htdocs/sites/default/files/ -name "*.php"
+
 #CMS Updates Listing Routine
 mkdir -p /opt/scripts/
 rm -rf /opt/scripts/cms_updates.txt
