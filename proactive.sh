@@ -60,10 +60,28 @@ else
 fi
 echo
 
+
+
+## MALWARE HUNTING AND RELATED BELOW HERE ####
+
+
 #PHP files in /uploads/ or /files/
 echo "Searching for PHP files within /var/www/*/htdocs/wp-content/uploads/ and /var/www/*/htdocs/sites/default/files/."
 echo "These are typically malicious files:"
 find /var/www/*/htdocs/wp-content/uploads/ /var/www/*/htdocs/sites/default/files/ -name "*.php"
+
+# Binaries within /var/www/ 
+echo "Searching for binary files within /var/www/*"
+echo "These are typically malicious files:"
+find /var/www/ -type f -executable -exec file -i '{}' \; | grep 'x-executable; charset=binary'
+
+# Files owned apache:apache  within /var/www/ 
+# Note need to update this section to include OS detection (cent and deb) to include the www-data user
+echo "Searching for files and directories owned apache:apache within /var/www/*"
+echo "These are typically malicious. Note this portion will need filtering added as a pipe to 'grep -v' or blacklisting added to the find command."
+echo "Until then, expect this to be verbose:"
+find /var/www/ -user apache -group apache
+
 
 #CMS Updates Listing Routine
 mkdir -p /opt/scripts/
@@ -78,6 +96,6 @@ echo "CMS updates scanning complete. Results will be in /opt/scripts/cms_updates
 finish_time="$(date +%s)"
 
 #Send Results Via Mail - commented out for testing
-#mail -s 'CMS updates for $hostname' jwoodard@contegix.com < /opt/scripts/updates.txt
+#mail -s 'CMS updates for $hostname' user@hostname.tld < /opt/scripts/updates.txt
 
 echo "Time duration: $((finish_time - start_time)) secs."
